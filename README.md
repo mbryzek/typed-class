@@ -17,8 +17,8 @@ examples/inheritance.rb for more information.
 
 ## Installation
 
-  gem install typed_class
-  require 'typed_class'
+    gem install typed_class
+    require 'typed_class'
 
 ## Simple Example
 
