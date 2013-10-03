@@ -98,6 +98,7 @@ end
 
 update_gemspec!(next_version)
 run("gem build typed-class.gemspec")
+run("git commit -m \"Update version\" typed-class.gemspec")
 
 if ask_boolean("Push gem")
   run("gem push typed-class-%s.gem" % next_version)
