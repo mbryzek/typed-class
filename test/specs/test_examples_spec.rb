@@ -10,4 +10,3 @@ describe "examples" do
   end
 
 end
-

@@ -1,7 +1,6 @@
 class TypedClass
 
   @@map = {}
-  @@metadata = nil
 
   def after_initialize
     metadata = @@map[self.class.to_s.to_sym]
@@ -15,6 +14,7 @@ class TypedClass
     ::TypedClassInternal::Util.assert_class(child, Class)
     ::TypedClassInternal::Util.check_state(child.superclass == TypedClass,
                                                "Class must extend TypedClass directly")
+
     @@metadata = @@map[child.to_s.to_sym]
     if @@metadata.nil?
       @@map[child.to_s.to_sym] = @@metadata = TypedClassInternal::Metadata.new(child)
@@ -28,7 +28,8 @@ class TypedClass
   end
 
   def TypedClass.field(attr_name, attr_klass, opts={})
-    ::TypedClassInternal::Util.check_not_nil(@@metadata, "metadata not defined")
+    metadata = @@map[self.to_s.to_sym]
+    ::TypedClassInternal::Util.check_state(metadata, "No metadata for klass[%s]" % self)
     ::TypedClassInternal::Util.assert_class(attr_name, Symbol)
     default = opts.delete(:default)
     ::TypedClassInternal::Util.assert_empty_opts(opts)
@@ -49,8 +50,8 @@ class TypedClass
                                                "Required fields cannot have defaults. Class[%s] Field[%s] Default[%s]" % [klass.name, attr_name, default])
 
     attr = ::TypedClassInternal::Attribute.new(attr_name, klass, :default => default, :optional => optional)
-    @@metadata.add_attribute(attr)
-    TypedClass.rewrite_constructor(@@metadata)
+    metadata.add_attribute(attr)
+    TypedClass.rewrite_constructor(metadata)
   end
 
   def TypedClass.get_default(klass, attr_name)
