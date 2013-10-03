@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'typed-class'
-  s.version     = '0.5.0'
+  s.version     = '0.5.1'
   s.date        = '2013-08-07'
   s.summary     = "A DSL for defining very simple, strongly typed classes"
   s.description = "Allows you to define very simple classes with immutable variables, type safe constructors, and generated readers"
